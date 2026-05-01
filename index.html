@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Bookshelf App | Kelola Buku Anda</title>
+  <!-- CSS External -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <div class="app-header">
+    <h1>📚 Bookshelf Manager</h1>
+    <p>Kelola koleksi bacaan – Edit, tandai, dan simpan dengan mudah</p>
+  </div>
+
+  <!-- FORM TAMBAH BUKU -->
+  <div class="card">
+    <h2>📖 Tambah Buku Baru</h2>
+    <form id="bookForm" data-testid="bookForm">
+      <div class="form-group">
+        <label for="bookFormTitle">Judul Buku</label>
+        <input type="text" id="bookFormTitle" data-testid="bookFormTitleInput" required placeholder="Contoh: Atomic Habits">
+      </div>
+      <div class="form-group">
+        <label for="bookFormAuthor">Penulis</label>
+        <input type="text" id="bookFormAuthor" data-testid="bookFormAuthorInput" required placeholder="Nama penulis">
+      </div>
+      <div class="form-group">
+        <label for="bookFormYear">Tahun Terbit</label>
+        <input type="number" id="bookFormYear" data-testid="bookFormYearInput" required placeholder="2024" step="1">
+      </div>
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input type="checkbox" id="bookFormIsComplete" data-testid="bookFormIsCompleteCheckbox">
+          <span>Selesai dibaca</span>
+        </label>
+      </div>
+      <button type="submit" id="bookFormSubmit" data-testid="bookFormSubmitButton" class="btn-success">
+        ✨ Masukkan Buku ke rak <span id="targetShelf">Belum selesai dibaca</span>
+      </button>
+    </form>
+  </div>
+
+  <!-- PENCARIAN -->
+  <div class="card">
+    <h2>🔍 Cari Buku</h2>
+    <form id="searchBook" data-testid="searchBookForm">
+      <div class="form-group">
+        <label for="searchBookTitle">Cari berdasarkan judul</label>
+        <input type="text" id="searchBookTitle" data-testid="searchBookFormTitleInput" placeholder="Ketik judul buku...">
+      </div>
+      <div class="flex-buttons">
+        <button type="submit" id="searchSubmit" data-testid="searchBookFormSubmitButton">🔎 Cari</button>
+        <button type="button" id="resetSearch" class="btn-secondary">🗑️ Reset</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- BELUM SELESAI DIBACA -->
+  <div class="card">
+    <h2>📘 Belum selesai dibaca</h2>
+    <div id="incompleteBookList" data-testid="incompleteBookList" class="bookshelf"></div>
+  </div>
+
+  <!-- SELESAI DIBACA -->
+  <div class="card">
+    <h2>✅ Selesai dibaca</h2>
+    <div id="completeBookList" data-testid="completeBookList" class="bookshelf"></div>
+  </div>
+  <footer>© Bookshelf App — Data tersimpan di localStorage 📦</footer>
+</div>
+
+<!-- MODAL EDIT BUKU -->
+<div id="editModal" class="modal" data-testid="editModal">
+  <div class="modal-content">
+    <h2>✏️ Edit Buku</h2>
+    <form id="editBookForm">
+      <div class="form-group">
+        <label for="editBookTitle">Judul Buku</label>
+        <input type="text" id="editBookTitle" required placeholder="Judul lengkap">
+      </div>
+      <div class="form-group">
+        <label for="editBookAuthor">Penulis</label>
+        <input type="text" id="editBookAuthor" required placeholder="Penulis">
+      </div>
+      <div class="form-group">
+        <label for="editBookYear">Tahun Terbit</label>
+        <input type="number" id="editBookYear" required step="1" placeholder="Tahun">
+      </div>
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input type="checkbox" id="editBookIsComplete">
+          <span>✅ Sudah selesai dibaca</span>
+        </label>
+      </div>
+      <input type="hidden" id="editBookId">
+      <div class="modal-actions">
+        <button type="button" id="cancelEdit" class="btn-secondary">Batal</button>
+        <button type="submit" class="btn-success">💾 Simpan Perubahan</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script src="main.js"></script>
+</body>
+</html>
