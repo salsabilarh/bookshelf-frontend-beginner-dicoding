@@ -72,7 +72,6 @@ Yang membedakan proyek ini dari sekadar mengikuti *requirement* submission adala
 
 ## Tech Stack
 
-```text
 📁 Teknologi
 ├── HTML5              → Struktur & markup; data-testid untuk automated testing
 ├── CSS3
@@ -86,8 +85,6 @@ Yang membedakan proyek ini dari sekadar mengikuti *requirement* submission adala
     └── JSON           → stringify/parse untuk serialisasi data ke storage
 
 **Ketergantungan Eksternal:** Tidak ada. Zero dependencies — dapat berjalan langsung di browser tanpa instalasi apapun.
-
----
 
 ## Arsitektur & Pendekatan Teknis
 
