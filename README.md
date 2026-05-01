@@ -1,4 +1,4 @@
-# 📚 Bookshelf App — Manajer Koleksi Buku Berbasis Web
+# 📚 Bookshelf App — Browser-Based Book Collection Manager
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
@@ -8,109 +8,110 @@
 ![Score](https://img.shields.io/badge/Score-4%2F5_%E2%98%85-FFD700?style=for-the-badge)
 ![Learning Path](https://img.shields.io/badge/Frontend_Web-Learning_Path_Stage_3-orange?style=for-the-badge)
 
-> ⭐ **Submission akhir kursus "Belajar Membuat Front-End Web untuk Pemula"** — tahap ketiga dari *Frontend Web Learning Path* Dicoding.  
-> Aplikasi manajemen koleksi buku *full-featured* yang dibangun dengan Vanilla JavaScript murni, DOM Manipulation, dan Web Storage sebagai lapisan persistensi data.
+> ⭐ **Final submission for "Belajar Membuat Front-End Web untuk Pemula"** — Stage 3 of the *Frontend Web Learning Path* at Dicoding.
+> A full-featured book collection manager built with pure Vanilla JavaScript, DOM Manipulation, and Web Storage as the persistence layer.
 
 ---
 
-## 📖 Daftar Isi
+## 📖 Table of Contents
 
-- [Ringkasan Eksekutif](#ringkasan-eksekutif)
-- [Fitur Utama](#-fitur-utama)
-- [Tech Stack](#️-tech-stack)
-- [Arsitektur & Pendekatan Teknis](#️-arsitektur--pendekatan-teknis)
-- [Cara Instalasi & Penggunaan](#-cara-instalasi--penggunaan-lokal)
-- [Catatan Teknis: Mengapa Skor 4/5](#-catatan-teknis-mengapa-skor-45)
-- [Pelajaran Teknis — What I Learned](#-pelajaran-teknis--what-i-learned)
-- [Lisensi](#-lisensi)
-
----
-
-## Ringkasan Eksekutif
-
-> Proyek ini adalah **transisi nyata dari *markup statis* ke *aplikasi interaktif***: halaman yang merespons pengguna, mengingat data setelah browser ditutup, dan memvalidasi input sebelum disimpan — semuanya tanpa framework, tanpa library, tanpa backend.
-
-Bookshelf App memungkinkan pengguna mengelola koleksi buku pribadi mereka langsung di browser:
-- Menambah buku baru 📖
-- Memindahkannya antara rak *"Belum Selesai"* dan *"Selesai Dibaca"* 🔄
-- Mengedit detail ✏️
-- Menghapus 🗑️
-- Mencari berdasarkan judul 🔍
-
-Seluruh data **persisten di `localStorage`** — tetap tersedia saat halaman di-refresh atau browser dibuka kembali.
-
-Yang membedakan proyek ini dari sekadar mengikuti *requirement* submission adalah adanya **lapisan *defensive programming*** yang ditambahkan secara sadar: sanitasi input XSS, validasi tahun dengan batas yang masuk akal, pembersihan data korup saat *load*, dan pola *fail-safe* di setiap titik yang bisa gagal.
+- [Executive Summary](#executive-summary)
+- [Key Features](#key-features)
+- [Tech Stack](#tech-stack)
+- [Architecture & Technical Approach](#architecture--technical-approach)
+- [Installation & Local Usage](#installation--local-usage)
+- [Technical Notes: Why 4/5](#technical-notes-why-45)
+- [What I Learned](#what-i-learned)
+- [License](#license)
 
 ---
 
-## Fitur Utama
+## Executive Summary
 
-### Kegunaan (Usability)
+> This project marks the **real transition from static markup to an interactive application**: a page that responds to user input, remembers data after the browser is closed, and validates input before persisting it — all without a framework, without a library, and without a backend.
 
-| Fitur | Deskripsi |
-|-------|------------|
-| ➕ **Tambah Buku** | Form dengan 4 field (judul, penulis, tahun, status baca) + label submit dinamis yang berubah mengikuti checkbox |
-| 📚 **Dua Rak Terpisah** | Buku otomatis ditempatkan di rak "Belum Selesai" atau "Selesai Dibaca" sesuai status |
-| 🔁 **Toggle Completion** | Satu klik memindahkan buku antar rak tanpa *reload* halaman |
-| ✏️ **Edit In-Modal** | Pop-up modal dengan animasi `fadeInUp`, form terisi otomatis dengan data buku yang dipilih |
-| 🗑️ **Hapus dengan Konfirmasi** | Dialog konfirmasi mencegah penghapusan tidak disengaja |
-| 🔍 **Live Search** | Filter buku berdasarkan judul secara *case-insensitive*, dengan tombol *reset* satu klik |
-| 🎁 **Demo Data** | Tiga buku contoh otomatis tersedia saat pertama kali dibuka — UX tidak pernah kosong |
+Bookshelf App lets users manage their personal book collection entirely in the browser:
+- Add new books 📖
+- Move them between *"Reading"* and *"Finished"* shelves 🔄
+- Edit details ✏️
+- Delete entries 🗑️
+- Search by title 🔍
 
-### Keandalan (Reliability)
+All data **persists in `localStorage`** — surviving page refreshes and browser restarts.
 
-| Fitur | Deskripsi |
-|-------|------------|
-| 💾 **Persistensi localStorage** | Semua data bertahan setelah browser ditutup dan dibuka kembali |
-| 🛡️ **Error Handling pada Load** | `try/catch` di `loadBooksFromStorage()` — jika data di localStorage rusak/*corrupted*, aplikasi *reset* ke state awal tanpa *crash* |
-| 🔍 **Data Integrity Filter** | Saat *load*, setiap item divalidasi memiliki properti wajib (`id`, `title`, `author`, `year`) — data parsial dibuang sebelum memasuki state |
-| ✅ **Validasi Input** | Tahun divalidasi sebagai integer positif dalam rentang 1000–3000; *title* dan *author* diperiksa tidak kosong setelah *trim* |
-| 🔒 **Proteksi XSS Dasar** | Fungsi `escapeHtml()` meng-escape karakter `&`, `<`, `>` sebelum konten user diinjeksikan ke DOM via `innerHTML` |
-| 📱 **Responsive** | Layout menyesuaikan di layar ≤640px; tombol aksi buku menggunakan `flex: 1` agar memenuhi lebar di *mobile* |
+What sets this project apart from merely satisfying the submission requirements is a deliberate layer of **defensive programming**: XSS input sanitization, year validation with sensible bounds, corrupt-data cleanup on load, and fail-safe patterns at every point of potential failure.
+
+---
+
+## Key Features
+
+### Usability
+
+| Feature | Description |
+|---------|-------------|
+| ➕ **Add Book** | 4-field form (title, author, year, read status) with a dynamic submit label that updates as the checkbox is toggled |
+| 📚 **Two Separate Shelves** | Books are automatically routed to "Reading" or "Finished" based on their status |
+| 🔁 **Toggle Completion** | A single click moves a book between shelves without reloading the page |
+| ✏️ **In-Modal Editing** | Animated `fadeInUp` modal with form fields pre-filled from the selected book's data |
+| 🗑️ **Delete with Confirmation** | A confirmation dialog prevents accidental deletion |
+| 🔍 **Live Search** | Case-insensitive title filtering with a one-click reset button |
+| 🎁 **Demo Data** | Three sample books are seeded on first load — the UI is never empty |
+
+### Reliability
+
+| Feature | Description |
+|---------|-------------|
+| 💾 **localStorage Persistence** | All data survives browser close and reopen |
+| 🛡️ **Error Handling on Load** | `try/catch` in `loadBooksFromStorage()` — corrupted localStorage data triggers a clean reset instead of a crash |
+| 🔍 **Data Integrity Filter** | On load, every item is validated for required properties (`id`, `title`, `author`, `year`) — partial records are discarded before entering state |
+| ✅ **Input Validation** | Year is validated as a positive integer in the range 1000–3000; title and author are checked for non-empty values after trimming |
+| 🔒 **Basic XSS Protection** | `escapeHtml()` escapes `&`, `<`, and `>` characters before user content is injected into the DOM via `innerHTML` |
+| 📱 **Responsive Layout** | Adapts to screens ≤640px; action buttons use `flex: 1` to fill available width on mobile |
 
 ---
 
 ## Tech Stack
 
 ```text
-📁 Teknologi
-├── HTML5              → Struktur & markup; data-testid untuk automated testing
+📁 Technologies
+├── HTML5              → Structure & markup; data-testid attributes for automated testing
 ├── CSS3
-│   ├── Flexbox        → Layout form, bookshelf, dan action buttons
+│   ├── Flexbox        → Form, bookshelf, and action button layouts
 │   ├── CSS Transitions & Animation (fadeInUp) → Modal UX
-│   └── Media Query (640px) → Responsivitas mobile
+│   └── Media Query (640px) → Mobile responsiveness
 └── JavaScript (ES6+)
     ├── DOM API        → createElement, innerHTML, addEventListener, querySelector
-    ├── Web Storage    → localStorage untuk persistensi data
+    ├── Web Storage    → localStorage for data persistence
     ├── Array Methods  → push, filter, find, findIndex, forEach
-    └── JSON           → stringify/parse untuk serialisasi data ke storage
+    └── JSON           → stringify/parse for storage serialization
+```
 
-**Ketergantungan Eksternal:** Tidak ada. Zero dependencies — dapat berjalan langsung di browser tanpa instalasi apapun.
+**External Dependencies:** None. Zero dependencies — runs directly in any browser with no installation required.
 
 ---
 
-## Arsitektur & Pendekatan Teknis
+## Architecture & Technical Approach
 
-### State Management: Array Tunggal sebagai Source of Truth
+### State Management: Single Array as Source of Truth
 
-Seluruh state aplikasi hidup dalam satu array global:
+All application state lives in one global array:
 
 ```javascript
 let books = [];
 ```
 
-Setiap operasi (tambah, edit, hapus, toggle) memodifikasi array ini, lalu secara konsisten memanggil dua fungsi:
+Every operation — add, edit, delete, toggle — modifies this array, then consistently calls two functions:
 
 ```javascript
-saveBooksToStorage(); // sinkronisasi ke localStorage
-renderBooks(books);   // sinkronisasi ke DOM
+saveBooksToStorage(); // sync to localStorage
+renderBooks(books);   // sync to DOM
 ```
 
-Pola **unidirectional data flow** secara manual: state → storage → render. Tidak ada operasi yang memodifikasi DOM secara langsung tanpa melewati state terlebih dahulu. Ini adalah pola yang sama yang mendasari framework state management modern (Zustand, Redux) — hanya diimplementasikan tanpa abstraksi.
+This implements **unidirectional data flow** manually: state → storage → render. No operation ever mutates the DOM directly without first going through state. This is the same pattern that underpins modern state management frameworks like Zustand and Redux — just without the abstraction layer.
 
-### DOM Manipulation: Render Berbasis Data
+### DOM Manipulation: Data-Driven Rendering
 
-Alih-alih menggunakan string HTML yang digabung, setiap book item dibangun programatik:
+Rather than concatenating raw HTML strings, each book item is built programmatically:
 
 ```javascript
 const bookDiv = document.createElement('div');
@@ -118,7 +119,7 @@ bookDiv.setAttribute('data-bookid', book.id);
 bookDiv.setAttribute('data-testid', 'bookItem');
 bookDiv.classList.add('book-item');
 
-// Event listener diattach langsung ke elemen yang baru dibuat
+// Event listeners attached directly to the newly created element
 const toggleBtn = bookDiv.querySelector('[data-testid="bookItemIsCompleteButton"]');
 toggleBtn.addEventListener('click', (e) => {
   e.stopPropagation();
@@ -126,11 +127,11 @@ toggleBtn.addEventListener('click', (e) => {
 });
 ```
 
-Keputusan penting: `e.stopPropagation()` digunakan karena tombol-tombol aksi bersarang di dalam elemen buku. Tanpanya, klik pada tombol akan bubble ke container dan bisa memicu event yang tidak diinginkan.
+A key decision here: `e.stopPropagation()` is used because action buttons are nested inside the book container. Without it, a button click would bubble up to the container and potentially trigger unintended parent-level events.
 
-### localStorage: Serialisasi dan Defensive Loading
+### localStorage: Serialization and Defensive Loading
 
-Data disimpan sebagai JSON string dan dimuat kembali dengan validasi berlapis:
+Data is stored as a JSON string and reloaded with layered validation:
 
 ```javascript
 function loadBooksFromStorage() {
@@ -138,20 +139,20 @@ function loadBooksFromStorage() {
   if (stored) {
     try {
       books = JSON.parse(stored);
-      // Guard: buang data yang tidak memiliki field wajib
+      // Guard: discard records missing required fields
       books = books.filter(b => b.id && b.title && b.author && typeof b.year === 'number');
     } catch(e) {
-      books = []; // fallback jika JSON rusak
+      books = []; // fallback if JSON is malformed
     }
   }
 }
 ```
 
-`typeof b.year === 'number'` secara eksplisit memverifikasi tipe data, bukan hanya keberadaan property — karena `JSON.parse` bisa saja mengembalikan `{ year: "2023" }` (string) jika data di-inject secara manual via DevTools.
+`typeof b.year === 'number'` explicitly verifies the data type, not just property existence — because `JSON.parse` may return `{ year: "2023" }` (a string) if the stored value was manually edited via DevTools.
 
-### Proteksi XSS Sederhana
+### Basic XSS Protection
 
-Karena data buku yang diinput user dirender kembali ke DOM via `innerHTML`, ada risiko XSS injection. Fungsi `escapeHtml()` menangani ini:
+Since user-supplied book data is rendered back into the DOM via `innerHTML`, there is a real risk of XSS injection. `escapeHtml()` addresses this:
 
 ```javascript
 function escapeHtml(str) {
@@ -164,86 +165,87 @@ function escapeHtml(str) {
 }
 ```
 
-Ini bukan solusi XSS yang komprehensif (tidak menghandle atribut HTML, JavaScript URL, dll), tetapi mencerminkan kesadaran bahwa **user input tidak pernah boleh dipercaya** — prinsip yang berlaku sama di frontend maupun backend.
+This is not a comprehensive XSS solution — it does not handle HTML attributes, JavaScript URLs, or other vectors — but it reflects a conscious awareness that **user input should never be trusted implicitly**, a principle that applies equally to frontend and backend systems.
 
-### Arsitektur Layer: Konteks dalam Learning Path
+### Layer Architecture: Context Within the Learning Path
 
 ```
-Stage 1 (HTML & CSS)        : HTML semantik + CSS visual → Fondasi statis
-Stage 2 (JS Fundamentals)   : OOP, rekursi, unit testing, functional array methods
-Stage 3 (Proyek Ini)        : + DOM Manipulation + localStorage → Interaktivitas & persistensi
-Stage 4 (Berikutnya)        : + Fetch API + RESTful API consumption → Data dari server
-Stage 5 (Future)            : + Framework (React/Vue) → Component-based architecture
+Stage 1 (HTML & CSS)       : Semantic HTML + visual CSS → Static foundation
+Stage 2 (JS Fundamentals)  : OOP, recursion, unit testing, functional array methods
+Stage 3 (This Project)     : + DOM Manipulation + localStorage → Interactivity & persistence
+Stage 4 (Next)             : + Fetch API + RESTful API consumption → Server-side data
+Stage 5 (Future)           : + Framework (React/Vue) → Component-based architecture
 ```
 
-Proyek ini adalah titik di mana *halaman* berevolusi menjadi *aplikasi* — titik yang paling penting untuk dipahami sebelum bekerja dengan framework apapun, karena semua yang dilakukan framework sesungguhnya adalah abstraksi dari apa yang dilakukan di sini secara manual.
+This is the stage where a *page* evolves into an *application* — the most important transition to understand before working with any framework, because everything a framework does is ultimately an abstraction of what is done here by hand.
 
 ---
 
-## Cara Instalasi & Penggunaan Lokal
+## Installation & Local Usage
 
-Proyek tidak memerlukan build tool atau server lokal.
+No build tools or local server required.
 
-**Clone dan buka langsung:**
+**Clone and open directly:**
 ```bash
-git clone https://github.com/USERNAME/bookshelf-app-dicoding.git
-cd bookshelf-app-dicoding
+git clone https://github.com/salsabilarh/bookshelf-frontend-beginner-dicoding.git
+cd bookshelf-frontend-beginner-dicoding
 open index.html        # macOS
 start index.html       # Windows
 xdg-open index.html    # Linux
 ```
 
-**Atau via VS Code Live Server:**
-1. Install ekstensi [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
-2. Klik kanan `index.html` → **"Open with Live Server"**
+**Or via VS Code Live Server:**
+1. Install the [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension
+2. Right-click `index.html` → **"Open with Live Server"**
 
-**Struktur folder:**
+**Project structure:**
 ```
-bookshelf-app-dicoding/
-├── index.html    ← Markup + data-testid attributes untuk automated testing
-├── main.js       ← Seluruh logika aplikasi (state, DOM, storage, validation)
+bookshelf-frontend-beginner-dicoding/
+├── index.html    ← Markup + data-testid attributes for automated testing
+├── main.js       ← All application logic (state, DOM, storage, validation)
 └── style.css     ← Styling + modal animation + responsive layout
 ```
 
-**Cara reset data:** Buka DevTools → Application → Local Storage → klik kanan origin → Clear, lalu refresh halaman.
+**To reset all data:** Open DevTools → Application → Local Storage → right-click the origin → Clear, then refresh.
 
 ---
 
-## Catatan Teknis: Mengapa Skor 4/5
+## Technical Notes: Why 4/5
 
-Submission ini memenuhi seluruh kriteria wajib Dicoding dan menambahkan fitur di luar requirement (modal edit, proteksi XSS, validasi tahun, demo data). Skor 4/5 mencerminkan bahwa ini adalah tahap belajar aktif — bukan produk final — dan ada ruang peningkatan yang sudah teridentifikasi:
+This submission satisfies all mandatory Dicoding criteria and adds features beyond what was required — modal editing, XSS protection, year validation, and demo data seeding. The 4/5 score reflects an active learning stage rather than a final product, and the gaps are already identified:
 
-- **Custom Event API**: Requirement lebih lanjut mengharapkan penggunaan `CustomEvent` dan `dispatchEvent` untuk komunikasi antar komponen, sebagai pengganti pemanggilan fungsi langsung. Ini adalah pola yang lebih scalable dan lebih dekat dengan cara framework bekerja.
-- **Pemisahan Concerns**: Logika storage, manipulasi data, dan rendering saat ini berada dalam satu file `main.js`. Pada iterasi berikutnya, ini akan dipisah ke modul terpisah (`storage.js`, `books.js`, `render.js`).
-- **Penggunaan `const` yang Lebih Ketat**: Beberapa variabel yang seharusnya bisa `const` masih dideklarasikan dengan `let`.
+- **Custom Event API**: A more advanced implementation would use `CustomEvent` and `dispatchEvent` for inter-component communication instead of direct function calls — a more scalable pattern that mirrors how frameworks handle event-driven updates.
+- **Separation of Concerns**: Storage logic, data manipulation, and rendering currently coexist in a single `main.js` file. The next iteration would split these into dedicated modules (`storage.js`, `books.js`, `render.js`).
+- **Stricter `const` Usage**: Some variables that are never reassigned are still declared with `let`.
 
-Keterbatasan ini disadari penuh dan menjadi target perbaikan konkret di proyek-proyek berikutnya dalam learning path.
-
----
-
-## Pelajaran Teknis — What I Learned
-
-### 1. State adalah Pusat Segalanya
-
-Insight terpenting dari proyek ini: UI hanya boleh menjadi *cerminan* dari state, bukan state itu sendiri. Setiap kali tergoda untuk langsung memanipulasi DOM ("hapus elemen ini"), yang benar dilakukan adalah memodifikasi array `books`, lalu re-render seluruhnya. Ini *lebih lambat* tapi jauh lebih *predictable dan maintainable* — dan ini adalah dasar dari semua framework modern.
-
-### 2. localStorage adalah Database dengan Limitasi
-
-Mengimplementasikan sendiri siklus `get → parse → modify → stringify → set` membuat limitasi localStorage menjadi nyata secara visceral: tidak ada query, tidak ada indexing, tidak ada relasi, sinkronous. Pemahaman ini mengkristalisasi *mengapa* solusi seperti IndexedDB, atau pindah ke server-side database, ada — bukan hanya teori.
-
-### 3. Validasi adalah Komunikasi, Bukan Hambatan
-
-Fungsi `validateBookFields()` memvalidasi dengan pesan error yang spesifik dan actionable. Ini bukan hanya tentang mencegah data buruk masuk — ini tentang membantu pengguna memahami apa yang salah. Prinsip yang sama berlaku di API: response `400 Bad Request` yang baik selalu menjelaskan *field mana* yang bermasalah dan *mengapa*.
-
-### 4. "Berhasil Jalan" Bukan Tujuan Akhir
-
-Menambahkan `escapeHtml()` bukan requirement submission. Menambahkan `filter()` saat load data bukan requirement. Menambahkan `try/catch` di JSON parsing bukan requirement. Tapi semuanya membuat perbedaan antara kode yang *kebetulan bekerja di kondisi normal* dengan kode yang *dirancang untuk tidak pecah di kondisi tidak normal*. Ini adalah perbedaan antara kode junior dan kode yang siap production.
+These limitations are fully understood and serve as concrete targets for the projects ahead.
 
 ---
 
-## Lisensi
+## What I Learned
 
-Proyek ini dibuat sebagai submission kursus Dicoding dan bersifat open untuk keperluan pembelajaran.
+### 1. State Is the Center of Everything
+
+The most important insight from this project: the UI should be nothing more than a *reflection* of state — never state itself. Every impulse to manipulate the DOM directly ("just remove this element") is better served by modifying the `books` array and re-rendering. It is *slower* in theory, but far more *predictable and maintainable* in practice — and this is the foundational principle behind every modern frontend framework.
+
+### 2. localStorage Is a Database With Hard Limits
+
+Implementing the full `get → parse → modify → stringify → set` cycle by hand makes localStorage's constraints viscerally real: no querying, no indexing, no relational data, and synchronous I/O. This crystallizes *why* alternatives like IndexedDB exist and *why* real applications eventually move state to the server — not as abstract theory, but as felt necessity.
+
+### 3. Validation Is Communication, Not a Barrier
+
+`validateBookFields()` produces specific, actionable error messages. This is not just about keeping bad data out — it is about helping users understand what went wrong and why. The same principle holds in API design: a well-formed `400 Bad Request` response always identifies *which field* failed and *why*, rather than returning a generic error.
+
+### 4. "It Works" Is Not the Finish Line
+
+Adding `escapeHtml()` was not a requirement. Filtering records on load was not a requirement. Wrapping `JSON.parse` in a `try/catch` was not a requirement. But each of these decisions separates code that *happens to work under normal conditions* from code that is *designed not to break under abnormal ones*. That gap is the difference between junior-level code and production-ready code.
 
 ---
+
+## License
+
+This project was built as a Dicoding course submission and is open for educational use.
+
+---
+
 *Submission: Belajar Membuat Front-End Web untuk Pemula — Stage 3 of Frontend Web Learning Path, Dicoding 2026*
