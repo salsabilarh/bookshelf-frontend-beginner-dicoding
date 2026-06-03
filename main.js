@@ -34,20 +34,20 @@ function validateBookFields(title, author, year) {
   const trimmedTitle = title?.trim();
   const trimmedAuthor = author?.trim();
   if (!trimmedTitle || trimmedTitle === "") {
-    alert("❌ Judul buku tidak boleh kosong!");
+    alert("Judul buku tidak boleh kosong!");
     return false;
   }
   if (!trimmedAuthor || trimmedAuthor === "") {
-    alert("❌ Penulis buku tidak boleh kosong!");
+    alert("Penulis buku tidak boleh kosong!");
     return false;
   }
   const yearNum = Number(year);
   if (isNaN(yearNum) || !Number.isInteger(yearNum) || yearNum <= 0 || yearNum > new Date().getFullYear() + 5) {
-    alert("❌ Tahun harus berupa angka positif dan masuk akal (contoh: 1945 - 2030).");
+    alert("Tahun harus berupa angka positif dan masuk akal (contoh: 1945 - 2030).");
     return false;
   }
   if (yearNum < 1000 || yearNum > 3000) {
-    alert("❌ Masukkan tahun yang valid (minimal 1000, maksimal 3000).");
+    alert("Masukkan tahun yang valid (minimal 1000, maksimal 3000).");
     return false;
   }
   return true;
@@ -104,7 +104,7 @@ function toggleBookCompletion(bookId) {
 
 // ========== HAPUS BUKU ==========
 function deleteBookById(bookId) {
-  const confirmDelete = confirm("⚠️ Apakah Anda yakin ingin menghapus buku ini?");
+  const confirmDelete = confirm("Apakah Anda yakin ingin menghapus buku ini?");
   if (confirmDelete) {
     books = books.filter(book => book.id !== bookId);
     saveBooksToStorage();
@@ -121,7 +121,7 @@ function renderBooks(booksToRender) {
   if (!booksToRender || booksToRender.length === 0) {
     const emptyMsg = document.createElement('p');
     emptyMsg.className = 'empty-message';
-    emptyMsg.textContent = '📭 Tidak ada buku yang ditemukan.';
+    emptyMsg.textContent = 'Tidak ada buku yang ditemukan.';
     incompleteBookList.appendChild(emptyMsg.cloneNode(true));
     completeBookList.appendChild(emptyMsg.cloneNode(true));
     return;
@@ -138,15 +138,15 @@ function renderBooks(booksToRender) {
 
     // Inner konten buku
     bookDiv.innerHTML = `
-      <h3 data-testid="bookItemTitle">📖 ${escapeHtml(book.title)}</h3>
-      <p data-testid="bookItemAuthor">✍️ Penulis: ${escapeHtml(book.author)}</p>
-      <p data-testid="bookItemYear">📅 Tahun: ${book.year}</p>
+      <h3 data-testid="bookItemTitle">${escapeHtml(book.title)}</h3>
+      <p data-testid="bookItemAuthor">Penulis: ${escapeHtml(book.author)}</p>
+      <p data-testid="bookItemYear">Tahun: ${book.year}</p>
       <div class="book-actions">
         <button data-testid="bookItemIsCompleteButton" class="${book.isComplete ? 'btn-warning' : 'btn-success'}">
-          ${book.isComplete ? '↩️ Belum selesai dibaca' : '✔️ Tandai Selesai'}
+          ${book.isComplete ? 'Belum selesai dibaca' : 'Tandai Selesai'}
         </button>
-        <button data-testid="bookItemDeleteButton" class="btn-danger">🗑️ Hapus Buku</button>
-        <button data-testid="bookItemEditButton" class="btn-warning">✏️ Edit Buku</button>
+        <button data-testid="bookItemDeleteButton" class="btn-danger">Hapus Buku</button>
+        <button data-testid="bookItemEditButton" class="btn-warning">Edit Buku</button>
       </div>
     `;
 
@@ -185,13 +185,13 @@ function renderBooks(booksToRender) {
   if (!hasIncomplete) {
     const emptyMsg = document.createElement('p');
     emptyMsg.className = 'empty-message';
-    emptyMsg.textContent = '📭 Belum ada buku di rak "Belum selesai".';
+    emptyMsg.textContent = 'Belum ada buku di rak "Belum selesai".';
     incompleteBookList.appendChild(emptyMsg);
   }
   if (!hasComplete) {
     const emptyMsg = document.createElement('p');
     emptyMsg.className = 'empty-message';
-    emptyMsg.textContent = '📭 Belum ada buku di rak "Selesai dibaca".';
+    emptyMsg.textContent = 'Belum ada buku di rak "Selesai dibaca".';
     completeBookList.appendChild(emptyMsg);
   }
 }
